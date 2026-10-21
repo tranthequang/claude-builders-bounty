@@ -1,44 +1,44 @@
-# Skill: Generate structured CHANGELOG
+# Skill: generate-changelog
 
 ## Purpose
-[BOUNTY $50] SKILL: Generate a structured CHANGELOG from git history
+Build a structured `CHANGELOG.md` from git history: commits since the latest tag, grouped into Added / Fixed / Changed / Removed.
 
 ## Trigger
 `/generate-changelog`
 
-## Instructions
-1. Read git tags; take commits since the latest tag (or last 50 commits).
-2. Categorize each commit into Added / Fixed / Changed / Removed.
-3. Write `CHANGELOG.md` with those sections and dates.
-4. Keep output markdown-only; do not modify source code.
+## When to use
+- Release notes need a first draft from conventional (or keyword) commits
+- Maintainers want a repeatable changelog without hand-sorting every commit
 
-## Acceptance
-- Works via `/generate-changelog` or `bash changelog.sh`
-- Uses commits since last tag
-- Categories: Added / Fixed / Changed / Removed
-- Includes sample output in the PR
-- README setup in ≤3 steps
+## Steps
+1. Prefer `bash changelog.sh` at the repo root (script in this PR).
+2. If the script is missing, run the equivalent: `git describe --tags --abbrev=0` for the last tag, then `git log <tag>..HEAD --pretty=format:'%h %s' --no-merges`.
+3. Sort subjects:
+   - **Added** — feat / add / new
+   - **Fixed** — fix / bug / crash
+   - **Changed** — refactor / chore / docs / perf / other
+   - **Removed** — remove / delete / drop
+4. Write `CHANGELOG.md` with those four sections. Do not edit application source for this task.
 
-## Issue context
+## Output shape
+```markdown
+# Changelog
 
-## 💰 Bounty: $50 — powered by [Opire](https://opire.dev)
+Generated since vX.Y.Z.
 
-## Description
-Create a Claude Code skill (`SKILL.md`) or a bash script that automatically generates
-a structured `CHANGELOG.md` from a project's git history.
+## Added
+- ...
 
-## Acceptance Criteria
-- [ ] Works via `/generate-changelog` command or `bash changelog.sh`
-- [ ] Fetches commits since the last git tag
-- [ ] Auto-categorizes into: `Added` / `Fixed` / `Changed` / `Removed`
-- [ ] Outputs a properly formatted `CHANGELOG.md`
-- [ ] Tested on a real GitHub repo (include a sample output in the PR)
-- [ ] README with setup instructions in 3 steps or fewer
+## Fixed
+- ...
 
-## How to Claim
-1. Comment `/opire try` in this issue
-2. Submit a PR with your solution
-3. Payment is released automatically on merge ✅
+## Changed
+- ...
 
-## Accepted Stack
-Bash, Python, or native Claude Code `SKILL.md`.
+## Removed
+- ...
+```
+
+## Notes
+- No tags → use full history and label the range clearly.
+- Keep merge commits out (`--no-merges`).
