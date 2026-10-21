@@ -1,3 +1,4 @@
+# Copy to .github/workflows/pr-structured-review.yml when your token has workflow scope.
 name: pr-structured-review
 on:
   pull_request:
